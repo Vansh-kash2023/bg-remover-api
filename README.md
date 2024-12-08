@@ -86,8 +86,8 @@ Before setting up the project, ensure you have the following:
 ### **3.2. Clone the Repository**
 If you haven't already, clone the repository from GitHub:
 ```bash
-git clone https://github.com/yourusername/bg-remover.git
-cd bg-remover
+git clone https://github.com/yourusername/bg-remover-api.git
+cd bg-remover-api
 ```
 
 ### **3.3. Install Dependencies**
@@ -109,7 +109,7 @@ Flask==2.1.0
 requests==2.26.0
 Pillow==8.4.0
 rembg==2.0.0
-gunicorn==20.1.0  # For production use
+waitress==3.0.2
 ```
 
 ---
@@ -151,7 +151,7 @@ This will serve the app with 4 worker processes.
 The folder structure of the project is as follows:
 
 ```
-bg-remover/
+bg-remover-api/
 │
 ├── app/
 │   ├── __init__.py        # Initializes the Flask app
