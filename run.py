@@ -1,3 +1,4 @@
+import os
 from app import create_app
 from dotenv import load_dotenv
 
@@ -7,6 +8,7 @@ load_dotenv()
 # Create the Flask app instance
 app = create_app()
 
-# Only run the app with Flask's built-in server if this script is run directly
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=5000)  # Use for local development
+    # Use the port provided by Render (via the PORT environment variable) or default to 5000
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port, debug=True)  # For local and Render deployment
