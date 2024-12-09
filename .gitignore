@@ -1,1 +1,12 @@
-venv
+# Ignore processed images
+app/static/processed_images/
+
+# Python-specific ignores
+*.pyc
+__pycache__/
+
+# Virtual environment
+venv/
+
+# environment
+.env

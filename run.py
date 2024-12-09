@@ -1,16 +1,9 @@
 from app import create_app
+from dotenv import load_dotenv
+
+load_dotenv()  # Automatically loads environment variables from .env file
 
 app = create_app()
 
 if __name__ == '__main__':
-    app.run(debug=True)
-
-# For production use this
-# from app import create_app
-# from waitress import serve
-
-# app = create_app()
-
-# if __name__ == "__main__":
-#     # Use Waitress to serve the app
-#     serve(app, host="0.0.0.0", port=5000)
+    app.run(debug=True)  # Local development
