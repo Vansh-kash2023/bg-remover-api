@@ -2,13 +2,13 @@ import os
 from app import create_app
 from dotenv import load_dotenv
 
-# Load environment variables from the .env file (if present)
+# Load environment variables
 load_dotenv()
 
-# Create the Flask app instance
+# Create Flask app
 app = create_app()
 
 if __name__ == "__main__":
-    # Use the port provided by Render (via the PORT environment variable) or default to 5000
+    # Get the port from the PORT environment variable, defaulting to 5000 for local development
     port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port, debug=True)  # For local and Render deployment
+    app.run(host="0.0.0.0", port=port)
