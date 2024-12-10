@@ -2,21 +2,14 @@ import os
 from app import create_app
 from dotenv import load_dotenv
 
-# Load environment variables
 load_dotenv()
-
-# Create Flask app
 app = create_app()
 
 if __name__ == "__main__":
-    # Get the port from the PORT environment variable, defaulting to 5000 for local development
     port = int(os.environ.get("PORT", 5000))
-    
-    # Check the environment type (default to 'development')
     env = os.environ.get("ENV", "development")
 
     if env == "production":
-        # For production, use Gunicorn
         from gunicorn.app.base import BaseApplication
 
         class GunicornApp(BaseApplication):
@@ -34,11 +27,10 @@ if __name__ == "__main__":
 
         options = {
             'bind': f'0.0.0.0:{port}',
-            'workers': 2,  # Adjust based on platform limits
+            'workers': 2,
             'threads': 4,
             'timeout': 120
         }
         GunicornApp(app, options).run()
     else:
-        # For local development, use Flask's built-in server
         app.run(host="0.0.0.0", port=port, debug=True)

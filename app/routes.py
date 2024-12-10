@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify, url_for
 import requests
-from io import BytesIO  # For in-memory file handling
+from io import BytesIO
 from PIL import Image, UnidentifiedImageError
 from rembg import remove
 import os
@@ -12,11 +12,9 @@ logging.basicConfig(level=logging.DEBUG)
 
 main = Blueprint('main', __name__)
 
-# Directories
 OUTPUT_DIR = 'app/static/processed_images'
 TEMP_DIR = 'app/static/temp_images'
 
-# Ensure directories exist
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 os.makedirs(TEMP_DIR, exist_ok=True)
 
@@ -27,14 +25,11 @@ def home():
 @main.route('/process-image', methods=['POST'])
 def process_image():
     try:
-        # Parse JSON input
         data = request.json
         image_url = data.get('image_url')
         if not image_url:
             return jsonify({"error": "Missing 'image_url' in the request body."}), 400
 
-        # Stream download image to disk
-        logging.debug("Downloading image...")
         unique_temp_filename = f"{uuid.uuid4().hex}.tmp"
         temp_image_path = os.path.join(TEMP_DIR, unique_temp_filename)
         with requests.get(image_url, stream=True, timeout=60) as response:
@@ -42,11 +37,9 @@ def process_image():
                 return jsonify({"error": "Failed to fetch the image from the provided URL."}), 400
             
             with open(temp_image_path, 'wb') as temp_file:
-                for chunk in response.iter_content(chunk_size=1024 * 1024):  # 1 MB chunks
+                for chunk in response.iter_content(chunk_size=1024 * 1024):
                     temp_file.write(chunk)
 
-        # Process image
-        logging.debug("Processing image...")
         try:
             with Image.open(temp_image_path) as image:
                 image_bytes = BytesIO()
@@ -57,17 +50,13 @@ def process_image():
             os.remove(temp_image_path)
             return jsonify({"error": "Invalid image format."}), 400
 
-        # Save the processed image
-        logging.debug("Saving processed image...")
         unique_filename = f"{datetime.now().strftime('%Y%m%d%H%M%S')}_{uuid.uuid4().hex}.png"
         processed_image_path = os.path.join(OUTPUT_DIR, unique_filename)
         with open(processed_image_path, "wb") as f:
             f.write(transparent_image_bytes)
 
-        # Clean up temporary file
         os.remove(temp_image_path)
 
-        # Generate public URL
         processed_image_url = url_for('static', filename=f'processed_images/{unique_filename}', _external=True)
         return jsonify({
             "original_image_url": image_url,
