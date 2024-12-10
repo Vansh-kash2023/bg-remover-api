@@ -1,7 +1,7 @@
-from flask import Blueprint, request, jsonify, current_app, url_for
+from flask import Blueprint, request, jsonify, url_for
 import requests
 from io import BytesIO
-from PIL import Image
+from PIL import Image, UnidentifiedImageError
 from rembg import remove
 import os
 import uuid
@@ -9,8 +9,12 @@ from datetime import datetime
 
 main = Blueprint('main', __name__)
 
-# Ensure the output directory exists
-os.makedirs('app/static/processed_images', exist_ok=True)
+# Output directory for processed images (used in local development)
+OUTPUT_DIR = 'app/static/processed_images'
+
+# Ensure the output directory exists only if it's a local environment
+if not os.getenv("ENV", "development") == "production":
+    os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 @main.route('/')
 def home():
@@ -26,19 +30,21 @@ def process_image():
 
         if not image_url:
             return jsonify({"error": "Missing 'image_url' in the request body."}), 400
+        if not image_url.startswith(('http://', 'https://')):
+            return jsonify({"error": "Invalid URL provided for 'image_url'."}), 400
 
-        # Download the image
-        response = requests.get(image_url)
-        print(f"Response status: {response.status_code}")  # Debugging line
-        if response.status_code != 200:
-            return jsonify({"error": "Failed to fetch the image from the provided URL."}), 400
-        
-        # Verify that the image content is not empty
-        if not response.content:
-            return jsonify({"error": "Empty image data received."}), 400
-
-        # Open the image
-        image = Image.open(BytesIO(response.content))
+        # Stream image download to reduce memory overhead
+        try:
+            with requests.get(image_url, stream=True, timeout=10) as response:
+                if response.status_code != 200:
+                    return jsonify({"error": "Failed to fetch the image from the provided URL."}), 400
+                
+                response.raw.decode_content = True  # Ensure content is decoded
+                image = Image.open(BytesIO(response.content))
+        except requests.RequestException as e:
+            return jsonify({"error": f"Failed to fetch the image: {str(e)}"}), 400
+        except UnidentifiedImageError:
+            return jsonify({"error": "The provided image could not be opened or is not supported."}), 400
 
         # Optional: Crop the image if bounding_box is provided
         if bounding_box:
@@ -49,7 +55,6 @@ def process_image():
                 if any(coord < 0 for coord in [x_min, y_min, x_max, y_max]) or x_min >= x_max or y_min >= y_max:
                     return jsonify({"error": "Invalid bounding box coordinates."}), 400
 
-                # Crop the image
                 image = image.crop((x_min, y_min, x_max, y_max))
             except KeyError:
                 return jsonify({"error": "Bounding box must contain 'x_min', 'y_min', 'x_max', and 'y_max' keys."}), 400
@@ -58,30 +63,25 @@ def process_image():
         image_bytes = BytesIO()
         image.save(image_bytes, format="PNG")
         image_bytes.seek(0)
+
+        # Perform background removal
         transparent_image_bytes = remove(image_bytes.getvalue())
-
-        # Check if background removal produced valid data
         if not transparent_image_bytes:
-            return jsonify({"error": "Background removal failed or returned empty data."}), 400
-
-        # Ensure the output directory exists
-        output_dir = current_app.config.get('STATIC_FOLDER', 'app/static/processed_images')
-        if not os.path.exists(output_dir):
-            os.makedirs(output_dir)
-
-        # Generate a unique filename for the processed image
-        unique_filename = f"{datetime.now().strftime('%Y%m%d%H%M%S')}_{uuid.uuid4().hex}.png"
-        processed_image_path = os.path.join(output_dir, unique_filename)
-
-        # Check the processed image path
-        print(f"Processed image path: {processed_image_path}")  # Debugging line
+            return jsonify({"error": "Background removal failed."}), 500
 
         # Save the processed image
-        with open(processed_image_path, "wb") as f:
-            f.write(transparent_image_bytes)
+        unique_filename = f"{datetime.now().strftime('%Y%m%d%H%M%S')}_{uuid.uuid4().hex}.png"
+        processed_image_url = None
 
-        # Generate the processed image's public URL using url_for
-        processed_image_url = url_for('static', filename=f'processed_images/{unique_filename}', _external=True)
+        if os.getenv("ENV", "development") == "production":
+            # In production, return in-memory URL or use cloud storage
+            processed_image_url = "data:image/png;base64," + transparent_image_bytes.encode("base64")
+        else:
+            # For local development, save to disk and generate public URL
+            processed_image_path = os.path.join(OUTPUT_DIR, unique_filename)
+            with open(processed_image_path, "wb") as f:
+                f.write(transparent_image_bytes)
+            processed_image_url = url_for('static', filename=f'processed_images/{unique_filename}', _external=True)
 
         return jsonify({
             "original_image_url": image_url,
@@ -89,5 +89,4 @@ def process_image():
         })
 
     except Exception as e:
-        # Capture unexpected errors and provide feedback
         return jsonify({"error": f"An unexpected error occurred: {str(e)}"}), 500
