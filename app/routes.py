@@ -1,5 +1,6 @@
 from flask import Blueprint, request, jsonify, url_for
 import requests
+from io import BytesIO  # Import BytesIO for in-memory file handling
 from PIL import Image, UnidentifiedImageError
 from rembg import remove
 import os
