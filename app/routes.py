@@ -1,15 +1,18 @@
 from flask import Blueprint, request, jsonify, url_for
 import requests
-from io import BytesIO  # Import BytesIO for in-memory file handling
+from io import BytesIO  # For in-memory file handling
 from PIL import Image, UnidentifiedImageError
 from rembg import remove
 import os
 import uuid
 from datetime import datetime
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
 
 main = Blueprint('main', __name__)
 
-# Output directory for processed images
+# Directories
 OUTPUT_DIR = 'app/static/processed_images'
 TEMP_DIR = 'app/static/temp_images'
 
@@ -30,10 +33,11 @@ def process_image():
         if not image_url:
             return jsonify({"error": "Missing 'image_url' in the request body."}), 400
 
-        # Stream image download to disk
+        # Stream download image to disk
+        logging.debug("Downloading image...")
         unique_temp_filename = f"{uuid.uuid4().hex}.tmp"
         temp_image_path = os.path.join(TEMP_DIR, unique_temp_filename)
-        with requests.get(image_url, stream=True) as response:
+        with requests.get(image_url, stream=True, timeout=60) as response:
             if response.status_code != 200:
                 return jsonify({"error": "Failed to fetch the image from the provided URL."}), 400
             
@@ -41,36 +45,38 @@ def process_image():
                 for chunk in response.iter_content(chunk_size=1024 * 1024):  # 1 MB chunks
                     temp_file.write(chunk)
 
-        # Load image from disk to process
+        # Process image
+        logging.debug("Processing image...")
         try:
             with Image.open(temp_image_path) as image:
-                # Save the image in memory for rembg
                 image_bytes = BytesIO()
                 image.save(image_bytes, format="PNG")
                 image_bytes.seek(0)
-
-                # Perform background removal
                 transparent_image_bytes = remove(image_bytes.getvalue())
         except UnidentifiedImageError:
             os.remove(temp_image_path)
-            return jsonify({"error": "Unable to process the provided image. Ensure it's a valid image format."}), 400
+            return jsonify({"error": "Invalid image format."}), 400
 
-        # Save the processed image to the output directory
+        # Save the processed image
+        logging.debug("Saving processed image...")
         unique_filename = f"{datetime.now().strftime('%Y%m%d%H%M%S')}_{uuid.uuid4().hex}.png"
         processed_image_path = os.path.join(OUTPUT_DIR, unique_filename)
         with open(processed_image_path, "wb") as f:
             f.write(transparent_image_bytes)
 
-        # Remove the temporary file
+        # Clean up temporary file
         os.remove(temp_image_path)
 
-        # Generate a public URL for the processed image
+        # Generate public URL
         processed_image_url = url_for('static', filename=f'processed_images/{unique_filename}', _external=True)
-
         return jsonify({
             "original_image_url": image_url,
             "processed_image_url": processed_image_url
         })
 
+    except requests.exceptions.RequestException as e:
+        logging.error(f"Error downloading image: {e}")
+        return jsonify({"error": "Failed to download the image."}), 500
     except Exception as e:
+        logging.error(f"Unexpected error: {e}")
         return jsonify({"error": f"An unexpected error occurred: {str(e)}"}), 500
