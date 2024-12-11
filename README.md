@@ -95,17 +95,22 @@ The project directory is structured as follows:
 bg-remover-api/
 │
 ├── app/
-│   ├── __init__.py        # Initializes the Flask app
-│   ├── routes.py          # API route definitions
-│   └── static/
-│       └── processed_images/  # Folder where processed images are saved
+│   ├── __init__.py                # Initializes the Flask app
+│   ├── routes.py                  # API route definitions
+│   ├── static/
+│   │   ├── processed_images/      # Folder where processed images are saved
+│   │   └── css/
+│   │       └── home.css           # CSS for the home page
+│   └── templates/
+│       └── home.html              # HTML file for the home page
 │
-├── config.py              # Configuration settings (e.g., upload folder paths)
-├── Procfile               # Instructions for deployment on Railway
-├── run.py                 # Entry point for running the Flask app
-├── requirements.txt       # List of required Python packages
-├── README.md              # Project documentation (this file)
-└── .gitignore             # Files and folders to be ignored by Git
+├── config.py                      # Configuration settings (e.g., upload folder paths)
+├── Procfile                       # Instructions for deployment on Railway
+├── run.py                         # Entry point for running the Flask app
+├── requirements.txt               # List of required Python packages
+├── README.md                      # Project documentation (this file)
+└── .gitignore                     # Files and folders to be ignored by Git
+
 ```
 
 - **`app/static/processed_images/`**: Directory where processed images are saved temporarily for access via public URLs.

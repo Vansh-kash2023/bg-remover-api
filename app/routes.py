@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify, url_for
+from flask import Blueprint, request, jsonify, url_for, render_template
 import requests
 from io import BytesIO
 from PIL import Image, UnidentifiedImageError
@@ -20,7 +20,7 @@ os.makedirs(TEMP_DIR, exist_ok=True)
 
 @main.route('/')
 def home():
-    return "Welcome to the Flask API for Background Removal!"
+    return render_template('home.html')
 
 @main.route('/process-image', methods=['POST'])
 def process_image():

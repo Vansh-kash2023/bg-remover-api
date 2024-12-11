@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Background Removal API</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+</head>
+<body>
+    <div class="content">
+        <h1>Welcome to Background Removal Flask API</h1>
+        <ul>
+            <li><strong>The API accepts an image link as input and the coordinates for the product area within the image.</strong></li>
+            <li><strong>To use this API,send a POST Request on the- <pre>/process-image</pre> Endpoint with the following request structure :</strong></li>
+           
+          
+                <pre>{
+                    "image_url":"public_image_url",
+                    "bounding_box": {
+                        "x_min": <integer>,
+                        "y_min": <integer>,
+                        "x_max": <integer>,
+                        "y_max": <integer>
+                    }
+                }
+                </pre>
+            
+         
+            <li><strong>It wll return the processed image through a unique URL</strong></li>
+            <li><strong>To run the project locally,clone the repository and run the flask app locally to use the API endpoints.</strong></li>
+            <p></p>
+          
+        </ul>
+    </div>
+</body>
+</html>
