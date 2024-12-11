@@ -1,5 +1,3 @@
----
-
 # **Background Removal API Documentation**
 
 ## **1. Project Overview**
