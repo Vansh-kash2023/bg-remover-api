@@ -1,0 +1,358 @@
+{
+	"info": {
+		"_postman_id": "56facda1-1b7a-44fc-96d2-eed196620ffc",
+		"name": "BG-remover-API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "40275133"
+	},
+	"item": [
+		{
+			"name": "Image 1",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n      \"image_url\": \"https://plus.unsplash.com/premium_photo-1681449856688-2abd99ab5a73?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://web-production-8b13.up.railway.app/process-image",
+					"protocol": "https",
+					"host": [
+						"web-production-8b13",
+						"up",
+						"railway",
+						"app"
+					],
+					"path": [
+						"process-image"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Image 1",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n      \"image_url\": \"https://plus.unsplash.com/premium_photo-1681449856688-2abd99ab5a73?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://web-production-8b13.up.railway.app/process-image",
+							"protocol": "https",
+							"host": [
+								"web-production-8b13",
+								"up",
+								"railway",
+								"app"
+							],
+							"path": [
+								"process-image"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "340"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 11 Dec 2024 15:17:33 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "railway-edge"
+						},
+						{
+							"key": "X-Railway-Request-Id",
+							"value": "dCx-4SkHSpKYXfHMkzuW3g_98031763"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"original_image_url\": \"https://plus.unsplash.com/premium_photo-1681449856688-2abd99ab5a73?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D\",\n    \"processed_image_url\": \"http://web-production-8b13.up.railway.app/static/processed_images/20241211151733_257c2503c0254ecfa6de10d5632d2cb6.png\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Image-2",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n      \"image_url\": \"https://plus.unsplash.com/premium_photo-1675186049563-000f7ac02c44?q=80&w=3087&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://web-production-8b13.up.railway.app/process-image",
+					"protocol": "https",
+					"host": [
+						"web-production-8b13",
+						"up",
+						"railway",
+						"app"
+					],
+					"path": [
+						"process-image"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "New Request",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n      \"image_url\": \"https://plus.unsplash.com/premium_photo-1675186049563-000f7ac02c44?q=80&w=3087&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://web-production-8b13.up.railway.app/process-image",
+							"protocol": "https",
+							"host": [
+								"web-production-8b13",
+								"up",
+								"railway",
+								"app"
+							],
+							"path": [
+								"process-image"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "340"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 11 Dec 2024 14:23:39 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "railway-edge"
+						},
+						{
+							"key": "X-Railway-Request-Id",
+							"value": "p5i8wZaSRqS-zrNmcN6XIg_1721921752"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"original_image_url\": \"https://plus.unsplash.com/premium_photo-1675186049563-000f7ac02c44?q=80&w=3087&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D\",\n    \"processed_image_url\": \"http://web-production-8b13.up.railway.app/static/processed_images/20241211142339_d959437e73184a6589446e97443a80c8.png\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Image-3",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n      \"image_url\": \"https://images.unsplash.com/photo-1549049950-48d5887197a0?q=80&w=2864&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D\"\r\n\r\n\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://web-production-8b13.up.railway.app/process-image",
+					"protocol": "https",
+					"host": [
+						"web-production-8b13",
+						"up",
+						"railway",
+						"app"
+					],
+					"path": [
+						"process-image"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "New Request",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n      \"image_url\": \"https://images.unsplash.com/photo-1549049950-48d5887197a0?q=80&w=2864&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D\"\r\n\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://web-production-8b13.up.railway.app/process-image",
+							"protocol": "https",
+							"host": [
+								"web-production-8b13",
+								"up",
+								"railway",
+								"app"
+							],
+							"path": [
+								"process-image"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "331"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 11 Dec 2024 14:52:00 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "railway-edge"
+						},
+						{
+							"key": "X-Railway-Request-Id",
+							"value": "UiWCwQdgSYWkvPBWoQUADA_1296365302"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"original_image_url\": \"https://images.unsplash.com/photo-1549049950-48d5887197a0?q=80&w=2864&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D\",\n    \"processed_image_url\": \"http://web-production-8b13.up.railway.app/static/processed_images/20241211145200_4e339bd86a4040329d448ffe2006f739.png\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Image-4",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n      \"image_url\": \"https://images.unsplash.com/photo-1469285994282-454ceb49e63c?q=80&w=2942&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://web-production-8b13.up.railway.app/process-image",
+					"protocol": "https",
+					"host": [
+						"web-production-8b13",
+						"up",
+						"railway",
+						"app"
+					],
+					"path": [
+						"process-image"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "New Request",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n      \"image_url\": \"https://images.unsplash.com/photo-1469285994282-454ceb49e63c?q=80&w=2942&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://web-production-8b13.up.railway.app/process-image",
+							"protocol": "https",
+							"host": [
+								"web-production-8b13",
+								"up",
+								"railway",
+								"app"
+							],
+							"path": [
+								"process-image"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "334"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 11 Dec 2024 14:54:01 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "railway-edge"
+						},
+						{
+							"key": "X-Railway-Request-Id",
+							"value": "a1_YpoeRRaCyeA1Ntmrvpw_2447590880"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"original_image_url\": \"https://images.unsplash.com/photo-1469285994282-454ceb49e63c?q=80&w=2942&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D\",\n    \"processed_image_url\": \"http://web-production-8b13.up.railway.app/static/processed_images/20241211145401_b27b9b3add1e413f8bbcd4c86b1d45eb.png\"\n}"
+				}
+			]
+		}
+	]
+}
