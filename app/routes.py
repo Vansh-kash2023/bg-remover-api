@@ -29,14 +29,6 @@ def process_image():
 
         if not image_url:
             return jsonify({"error": "Missing 'image_url' in the request body."}), 400
-        
-        if not bounding_box or not all(k in bounding_box for k in ('x_min', 'y_min', 'x_max', 'y_max')):
-            return jsonify({"error": "Missing or incomplete 'bounding_box' in the request body."}), 400
-
-        x_min = bounding_box['x_min']
-        y_min = bounding_box['y_min']
-        x_max = bounding_box['x_max']
-        y_max = bounding_box['y_max']
 
         unique_filename = f"{datetime.now().strftime('%Y%m%d%H%M%S')}_{uuid.uuid4().hex}.png"
         processed_image_path = os.path.join(OUTPUT_DIR, unique_filename)
@@ -44,15 +36,21 @@ def process_image():
         with requests.get(image_url, stream=True, timeout=60) as response:
             if response.status_code != 200:
                 return jsonify({"error": "Failed to fetch the image from the provided URL."}), 400
-            
+
             image_bytes = BytesIO(response.content)
             try:
                 with Image.open(image_bytes) as image:
-                    cropped_image = image.crop((x_min, y_min, x_max, y_max))
-                    cropped_image_bytes = BytesIO()
-                    cropped_image.save(cropped_image_bytes, format="PNG")
-                    cropped_image_bytes.seek(0)
-                    transparent_image_bytes = remove(cropped_image_bytes.getvalue())
+                    if bounding_box and all(k in bounding_box for k in ('x_min', 'y_min', 'x_max', 'y_max')):
+                        x_min = bounding_box['x_min']
+                        y_min = bounding_box['y_min']
+                        x_max = bounding_box['x_max']
+                        y_max = bounding_box['y_max']
+                        image = image.crop((x_min, y_min, x_max, y_max))
+                    
+                    image_bytes = BytesIO()
+                    image.save(image_bytes, format="PNG")
+                    image_bytes.seek(0)
+                    transparent_image_bytes = remove(image_bytes.getvalue())
             except UnidentifiedImageError:
                 return jsonify({"error": "Invalid image format."}), 400
 
