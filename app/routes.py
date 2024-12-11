@@ -17,7 +17,7 @@ TEMP_DIR = 'app/static/temp_images'
 
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 os.makedirs(TEMP_DIR, exist_ok=True)
-
+ 
 @main.route('/')
 def home():
     return render_template('home.html')
