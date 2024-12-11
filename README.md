@@ -124,7 +124,9 @@ bg-remover-api/
 ├── run.py                         # Entry point for running the Flask app
 ├── requirements.txt               # List of required Python packages
 ├── README.md                      # Project documentation (this file)
-└── .gitignore                     # Files and folders to be ignored by Git
+├── .gitignore                     # Files and folders to be ignored by Git
+└── BG-remover-API.postman_collection.json  # Postman collection file
+
 
 ```
 
